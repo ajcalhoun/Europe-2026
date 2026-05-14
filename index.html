@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Europe 2026 — Packing List</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #1c1917;
+      --ink-muted: #78716c;
+      --paper:     #faf8f5;
+      --paper-2:   #f2ede7;
+      --rule:      #e7e0d8;
+      --stamp-red: #b91c1c;
+      --stamp-bg:  #fef2f2;
+      --gold:      #b45309;
+      --gold-bg:   #fef9ee;
+      --green:     #15803d;
+      --green-bg:  #f0fdf4;
+      --check:     #15803d;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 48px 24px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 28px,
+        rgba(255,255,255,0.018) 28px,
+        rgba(255,255,255,0.018) 29px
+      );
+    }
+    .hero-flag {
+      font-size: 28px;
+      letter-spacing: 6px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      position: relative;
+    }
+    .hero-sub {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(250,248,245,0.55);
+      position: relative;
+    }
+    .hero-rule {
+      width: 48px;
+      height: 2px;
+      background: #a78560;
+      margin: 18px auto;
+      position: relative;
+    }
+    .progress-wrap {
+      max-width: 360px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(250,248,245,0.5);
+      margin-bottom: 8px;
+    }
+    .progress-track {
+      height: 3px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #a78560, #d4a96a);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    /* ── WEATHER ZONES ── */
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .weather-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .weather-note {
+      font-size: 11px;
+      color: var(--ink-muted);
+      font-style: italic;
+      margin-bottom: 32px;
+    }
+    .weather-card {
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      padding: 12px 14px;
+      background: white;
+      border-left-width: 3px;
+    }
+    .weather-zone { font-weight: 600; font-size: 13px; }
+    .weather-dates { font-size: 11px; color: var(--ink-muted); margin: 2px 0 6px; letter-spacing: 0.3px; }
+    .weather-temps { font-size: 14px; font-weight: 600; }
+    .weather-temps span { font-weight: 300; font-size: 12px; color: var(--ink-muted); margin: 0 3px; }
+    .weather-desc { font-size: 11px; color: var(--ink-muted); margin-top: 5px; line-height: 1.5; }
+
+    /* ── FILTERS ── */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+    .filter-btn {
+      padding: 5px 14px;
+      border-radius: 99px;
+      border: 1px solid var(--rule);
+      background: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.3px;
+    }
+    .filter-btn:hover { border-color: var(--ink-muted); color: var(--ink); }
+    .filter-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+    /* ── PACKING SECTIONS ── */
+    .pack-section {
+      margin-bottom: 8px;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+    }
+    .pack-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 16px;
+      cursor: pointer;
+      user-select: none;
+      background: white;
+      transition: background 0.1s;
+    }
+    .pack-header:hover { background: var(--paper-2); }
+    .pack-header-left { font-weight: 600; font-size: 14px; }
+    .pack-header-right { display: flex; align-items: center; gap: 10px; }
+    .pack-count { font-size: 11px; color: var(--ink-muted); font-weight: 400; }
+    .pack-chevron { font-size: 10px; color: var(--ink-muted); transition: transform 0.2s; }
+    .pack-chevron.open { transform: rotate(180deg); }
+
+    .pack-items { padding: 4px 12px 10px; border-top: 1px solid var(--rule); }
+
+    .pack-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 7px 6px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .pack-item:hover { background: var(--paper); }
+    .pack-item.done { text-decoration: line-through; color: var(--ink-muted); }
+
+    .checkbox {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      border: 1.5px solid #d6cfc8;
+      background: white;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .checkbox.checked {
+      background: var(--check);
+      border-color: var(--check);
+    }
+    .checkbox.checked::after {
+      content: '✓';
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .item-text { font-size: 13.5px; line-height: 1.4; flex: 1; }
+    .item-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+
+    .tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 1px 7px;
+      border-radius: 99px;
+      text-transform: uppercase;
+    }
+    .tag-required  { background: var(--stamp-bg); color: var(--stamp-red); border: 1px solid #fecaca; }
+    .tag-itinerary { background: var(--gold-bg);   color: var(--gold);      border: 1px solid #fde68a; }
+    .tag-wedding   { background: #fdf2f8;           color: #9d174d;          border: 1px solid #fbcfe8; }
+    .tag-church    { background: #eff6ff;           color: #1d4ed8;          border: 1px solid #bfdbfe; }
+    .tag-beach     { background: #ecfeff;           color: #0e7490;          border: 1px solid #a5f3fc; }
+
+    /* ── FOOTER ── */
+    .refresh-note {
+      margin-top: 32px;
+      padding: 16px 20px;
+      background: white;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+    .refresh-note strong { color: var(--ink); }
+
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 11px;
+      color: #c4b9af;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 500px) {
+      .weather-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const STORAGE_KEY = 'europe2026_packing_v1';
+
+    const WEATHER = [
+      { zone: "🇬🇧 London",             dates: "May 31–Jun 4",  high: "68°F", low: "50°F", desc: "Cool evenings, ~27% daily rain chance. Layers + packable rain jacket essential.", color: "#3b5a8f" },
+      { zone: "🇮🇹 Cinque Terre",        dates: "Jun 4–~Jun 8",  high: "78°F", low: "64°F", desc: "Warm Mediterranean, ~5 rainy days/mo. Beach + strenuous hiking.", color: "#2d7a50" },
+      { zone: "🇮🇹 Tuscany / Florence",  dates: "~Jun 8–12",     high: "79°F", low: "60°F", desc: "Warm & sunny. Church visits, art galleries, outdoor dining.", color: "#b45309" },
+      { zone: "🇮🇹 Rome",                dates: "~Jun 12–16",    high: "80°F", low: "66°F", desc: "Hot & sunny, ~3 rainy days. Wedding Jun 15. Vatican: covered shoulders + knees.", color: "#b91c1c" },
+      { zone: "🇵🇹 Carcavelos / Lisbon", dates: "~Jun 16–20",    high: "77°F", low: "61°F", desc: "Dry & sunny, ~5% rain chance. Beach at Carcavelos. Warm evenings.", color: "#0f766e" },
+      { zone: "🇵🇹 Porto",               dates: "~Jun 20–23",    high: "73°F", low: "57°F", desc: "Cooler & breezier than Lisbon, ~16% rain chance. Light layer useful at night.", color: "#1d4ed8" },
+    ];
+
+    const SECTIONS = [
+      {
+        cat: "👔 Formal / Occasion",
+        items: [
+          { name: "Wedding outfit — suit or blazer + dress trousers",         tags: ["wedding"], required: true },
+          { name: "Dress shirt (white or light blue)",                         tags: ["wedding","church"], required: true },
+          { name: "Tie or pocket square",                                       tags: ["wedding"] },
+          { name: "Dress shoes (leather or smart leather-look)",               tags: ["wedding","church"], required: true },
+          { name: "Smart belt matching dress shoes",                           tags: ["wedding"] },
+          { name: "Blazer (doubles for church, theater, afternoon tea)",       tags: ["church"], required: true },
+        ]
+      },
+      {
+        cat: "👕 Everyday Clothing",
+        items: [
+          { name: "T-shirts / lightweight polos (×5)" },
+          { name: "Long-sleeve shirts or light button-downs (×2) — London layers + church modesty" },
+          { name: "Chinos / smart casual trousers (×2)" },
+          { name: "Shorts (×4) — Italy & Portugal dominate the second half" },
+          { name: "Lightweight jeans (×1) — London evenings + Porto nights" },
+          { name: "Swimwear (×1–2) — Monterosso beach + Carcavelos",          tags: ["beach"], required: true },
+          { name: "Underwear (×7)" },
+          { name: "Socks — ankle (×4) + mid-crew for hiking (×3)" },
+          { name: "Pajamas / sleepwear" },
+        ]
+      },
+      {
+        cat: "🧥 Outerwear",
+        items: [
+          { name: "Light rain jacket (packable) — London ~12 rainy days in June",  required: true },
+          { name: "Light fleece or zip sweater — London evenings + Porto nights",  required: true },
+          { name: "Sun hat or ball cap — Italy sun is strong" },
+        ]
+      },
+      {
+        cat: "👟 Footwear",
+        items: [
+          { name: "Trail sneakers / sturdy walking shoes — Cinque Terre hike + cobblestones", required: true },
+          { name: "Sandals / flip-flops — beach days",                              tags: ["beach"], required: true },
+          { name: "Dress shoes (covered above under Formal)" },
+          { name: "Compression socks for flights (×2 pairs)" },
+        ]
+      },
+      {
+        cat: "🎒 Bags & Carry",
+        items: [
+          { name: "Baggu (foldable tote) — Hyde Park picnic Jun 1 + shopping",     required: true, itinerary: true },
+          { name: "Compact picnic blanket — Hyde Park picnic Jun 1",               required: true, itinerary: true },
+          { name: "Daypack / small backpack — Cinque Terre hikes, full day trips", required: true },
+          { name: "EDC sling — everyday carry for city days, museums, transit",    required: true },
+          { name: "Reusable water bottle" },
+        ]
+      },
+      {
+        cat: "📚 Reading & Writing",
+        items: [
+          { name: "Kindle + charging cable" },
+          { name: "Physical book(s) — flights, trains, slow mornings" },
+          { name: "Travel notebook / journal" },
+          { name: "Pens (×2–3, including a good one)" },
+        ]
+      },
+      {
+        cat: "💻 Electronics & Tech",
+        items: [
+          { name: "Phone + charger + cable" },
+          { name: "UK plug adapter (Type G) — London",         required: true },
+          { name: "EU plug adapter (Type C/F) — Italy + Portugal", required: true },
+          { name: "Portable battery / power bank" },
+          { name: "Noise-canceling headphones / earbuds — overnight flights" },
+          { name: "Camera + memory cards" },
+        ]
+      },
+      {
+        cat: "🧴 Toiletries",
+        items: [
+          { name: "Sunscreen SPF 50+ — Italy sun is intense", required: true },
+          { name: "Lip balm with SPF" },
+          { name: "Deodorant" },
+          { name: "Toothbrush + toothpaste" },
+          { name: "Shampoo / conditioner (travel size or solid bar)" },
+          { name: "Body wash / soap" },
+          { name: "Razor + blades" },
+          { name: "Moisturizer" },
+          { name: "Hand sanitizer (×2 small)" },
+          { name: "Blister prevention / Band-Aids — Cinque Terre hiking", required: true },
+          { name: "Ibuprofen / Tylenol" },
+          { name: "Allergy meds if needed" },
+          { name: "Prescription medications (full supply + extra)" },
+          { name: "Melatonin — jet lag on overnight flights" },
+        ]
+      },
+      {
+        cat: "📋 Documents & Money",
+        items: [
+          { name: "Passport (valid 6+ months beyond Jun 2026)", required: true },
+          { name: "Printed / digital flight confirmations" },
+          { name: "Airbnb / hotel confirmation printouts",      required: true },
+          { name: "Travel insurance documents" },
+          { name: "Credit card with no foreign transaction fees", required: true },
+          { name: "GBP cash — London tubes & markets",          required: true },
+          { name: "EUR cash — Italy small vendors + Cinque Terre" },
+          { name: "ETIAS authorization (EU entry requirement — verify status)", required: true },
+          { name: "Emergency contacts card (physical)" },
+        ]
+      },
+      {
+        cat: "⛪ Church Visit Essentials",
+        items: [
+          { name: "Shoulders covered — Westminster Abbey, Vatican, Italian churches", required: true, tags: ["church"] },
+          { name: "Knees covered — trousers or long shorts for Vatican",             required: true, tags: ["church"] },
+          { name: "Quiet shoes for stone floors" },
+          { name: "Small cross-body bag — hands free for prayer books, maps" },
+        ]
+      },
+      {
+        cat: "🗺 Miscellaneous",
+        items: [
+          { name: "Small travel umbrella — London backup" },
+          { name: "Packing cubes (highly recommended for 24-day trip)" },
+          { name: "Laundry bags — dry/dirty separation" },
+          { name: "Neck pillow — overnight CLT–LHR flight" },
+          { name: "Eye mask + ear plugs — overnight flights" },
+          { name: "Wedding card / gift logistics if bringing a physical gift" },
+        ]
+      },
+    ];
+
+    const ALL_ITEMS = SECTIONS.flatMap(s => s.items.map(i => `${s.cat}::${i.name}`));
+
+    function App() {
+      const [checked, setChecked] = useState(() => {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+        catch { return {}; }
+      });
+      const [filter, setFilter]     = useState("all");
+      const [expanded, setExpanded] = useState({});
+
+      useEffect(() => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+      }, [checked]);
+
+      const toggle = key => setChecked(p => ({ ...p, [key]: !p[key] }));
+      const toggleSec = cat => setExpanded(p => ({ ...p, [cat]: p[cat] === false ? true : false }));
+
+      const total   = ALL_ITEMS.length;
+      const done    = ALL_ITEMS.filter(k => checked[k]).length;
+      const pct     = Math.round((done / total) * 100);
+
+      const visible = SECTIONS.map(s => ({
+        ...s,
+        items: s.items.filter(i => {
+          if (filter === "all")       return true;
+          if (filter === "required")  return i.required;
+          if (filter === "itinerary") return i.itinerary;
+          if (filter === "wedding")   return i.tags?.includes("wedding");
+          if (filter === "church")    return i.tags?.includes("church");
+          return true;
+        })
+      })).filter(s => s.items.length > 0);
+
+      return (
+        <div>
+          {/* HERO */}
+          <div className="hero">
+            <div className="hero-flag">🇬🇧 🇮🇹 🇵🇹</div>
+            <div className="hero-title">Europe 2026<br /><em style={{fontWeight:500,fontSize:'0.72em',opacity:0.8}}>Packing List</em></div>
+            <div className="hero-rule" />
+            <div className="hero-sub">May 30 – Jun 23 &nbsp;·&nbsp; UK → Italy → Portugal &nbsp;·&nbsp; Returns Madrid</div>
+            <div className="hero-rule" />
+            <div className="progress-wrap">
+              <div className="progress-label"><span>Packed</span><span>{done} / {total} ({pct}%)</span></div>
+              <div className="progress-track"><div className="progress-fill" style={{width:`${pct}%`}} /></div>
+            </div>
+          </div>
+
+          <div className="container">
+            {/* WEATHER */}
+            <div className="section-label">Weather by Zone</div>
+            <div className="weather-grid">
+              {WEATHER.map(w => (
+                <div className="weather-card" key={w.zone} style={{borderLeftColor: w.color}}>
+                  <div className="weather-zone" style={{color: w.color}}>{w.zone}</div>
+                  <div className="weather-dates">{w.dates}</div>
+                  <div className="weather-temps">↑ {w.high}<span>/</span>↓ {w.low}</div>
+                  <div className="weather-desc">{w.desc}</div>
+                </div>
+              ))}
+            </div>
+            <p className="weather-note">↻ Share updated forecasts closer to departure and the list can be revised accordingly.</p>
+
+            {/* FILTERS */}
+            <div className="section-label">Filter</div>
+            <div className="filters">
+              {[
+                {id:"all",      label:"All Items"},
+                {id:"required", label:"🔴 Must-Haves"},
+                {id:"itinerary",label:"📋 From Itinerary"},
+                {id:"wedding",  label:"💍 Wedding (Jun 15)"},
+                {id:"church",   label:"⛪ Church Visits"},
+              ].map(f => (
+                <button key={f.id} className={`filter-btn${filter===f.id?' active':''}`} onClick={()=>setFilter(f.id)}>
+                  {f.label}
+                </button>
+              ))}
+            </div>
+
+            {/* SECTIONS */}
+            <div className="section-label">Items</div>
+            {visible.map(sec => {
+              const isOpen = expanded[sec.cat] !== false;
+              const secDone = sec.items.filter(i => checked[`${sec.cat}::${i.name}`]).length;
+              return (
+                <div className="pack-section" key={sec.cat}>
+                  <div className="pack-header" onClick={() => toggleSec(sec.cat)}>
+                    <div className="pack-header-left">{sec.cat}</div>
+                    <div className="pack-header-right">
+                      <span className="pack-count">{secDone}/{sec.items.length}</span>
+                      <span className={`pack-chevron${isOpen?' open':''}`}>▼</span>
+                    </div>
+                  </div>
+                  {isOpen && (
+                    <div className="pack-items">
+                      {sec.items.map(item => {
+                        const key   = `${sec.cat}::${item.name}`;
+                        const isDone = checked[key];
+                        return (
+                          <div key={item.name} className={`pack-item${isDone?' done':''}`} onClick={()=>toggle(key)}>
+                            <div className={`checkbox${isDone?' checked':''}`} />
+                            <div>
+                              <div className="item-text">{item.name}</div>
+                              {!isDone && (
+                                <div className="item-tags">
+                                  {item.required  && <span className="tag tag-required">must-have</span>}
+                                  {item.itinerary && <span className="tag tag-itinerary">📋 itinerary</span>}
+                                  {(item.tags||[]).map(t => (
+                                    <span key={t} className={`tag tag-${t}`}>
+                                      {t==='wedding'?'💍 wedding':t==='church'?'⛪ church':t==='beach'?'🏖 beach':t}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+
+            {/* FOOTER */}
+            <div className="refresh-note">
+              <strong>↻ How to refresh:</strong> Share weather forecasts or updated itinerary details with Claude and the list can be revised. Checked items are saved in your browser and persist between visits.
+            </div>
+            <div className="footer">AJ · Europe 2026 · Built with Claude</div>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
