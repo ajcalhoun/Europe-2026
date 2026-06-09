@@ -151,7 +151,8 @@
 <body>
 <div id="root"></div>
 <script type="text/babel">
-  const { useState, useEffect, useCallback } = React;
+  const { useState, useEffect, useCallback, useRef } = React;
+  const TODAY = new Date().toISOString().slice(0,10);
   const STORAGE_KEY='europe2026_packing_v1';
   const WEATHER_KEY='europe2026_weather_v3';
   const WEATHER_TTL=6*60*60*1000;
@@ -745,6 +746,7 @@
   /* ── APP ── */
   function App(){
     const [tab,      setTab]      = useState('itinerary');
+    const todayRef = useRef(null);
     const [checked,  setChecked]  = useState(()=>{try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{};}catch{return{};}});
     const [filter,   setFilter]   = useState('all');
     const [expanded, setExpanded] = useState({});
@@ -789,6 +791,13 @@
     },[sheetTs]);
 
     useEffect(()=>{loadSheet();},[]);
+
+    useEffect(()=>{
+      if(tab!=='itinerary'||!todayRef.current)return;
+      const hdr=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hdr'))||148;
+      const top=todayRef.current.getBoundingClientRect().top+window.scrollY-hdr-8;
+      window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+    },[tab]);
 
     // merge sheet events into a day — returns {events, splitEvents} overrides
     const resolveDay=useCallback((day)=>{
@@ -848,7 +857,7 @@
                 </span>
               )}
             </div>
-            {DAYS.map(d=>{const resolved=resolveDay(d);return<DayCard key={d.date} day={{...d,...resolved}} wxCache={wxCache}/>;})}
+            {DAYS.map(d=>{const resolved=resolveDay(d);return(<div key={d.date} ref={d.date===TODAY?todayRef:null}><DayCard day={{...d,...resolved}} wxCache={wxCache}/></div>);})}
             <div className="app-footer">AJ · Europe 2026 · Built with Claude</div>
           </div>
         )}
