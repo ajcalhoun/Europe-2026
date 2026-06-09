@@ -605,8 +605,9 @@
   function DayCard({day,wxCache}){
     const [open,setOpen]=useState(false);
     const wx=wxForDate(day.date,wxCache);
+    const isPast=day.date<TODAY;
     return(
-      <div className="day-card">
+      <div className="day-card" style={isPast?{opacity:0.45,filter:'grayscale(25%)'}:undefined}>
         <div className="day-header" onClick={()=>setOpen(o=>!o)}>
           <div className="day-num" style={{background:day.color}}>{day.day}</div>
           <div className="day-header-body">
