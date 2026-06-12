@@ -165,6 +165,7 @@
     {zone:"🇮🇹 Rome",               start:"2026-06-10",end:"2026-06-12",lat:41.9028,lon:12.4964, color:"#b91c1c",avgHi:80,avgLo:66,avgRain:10,desc:"Hot & sunny. Vatican: covered shoulders + knees."},
     {zone:"🇵🇹 Carcavelos / Lisbon",start:"2026-06-12",end:"2026-06-18",lat:38.7169,lon:-9.1395, color:"#0f766e",avgHi:77,avgLo:61,avgRain:8, desc:"Dry & sunny, ~5% rain chance. Beach at Carcavelos."},
     {zone:"🇵🇹 Porto",              start:"2026-06-18",end:"2026-06-22",lat:41.1579,lon:-8.6291, color:"#1d4ed8",avgHi:73,avgLo:57,avgRain:20,desc:"Cooler & breezier, ~16% rain chance. Light layer useful at night."},
+    {zone:"🇪🇸 Madrid",              start:"2026-06-22",end:"2026-06-23",lat:40.4168,lon:-3.7038, color:"#dc2626",avgHi:88,avgLo:65,avgRain:5, desc:"Hot & dry. One last evening in Spain before the long flight home."},
   ];
 
   const wmoEmoji=c=>{c=parseInt(c??0);if(c===0)return'☀️';if(c===1)return'🌤';if(c===2)return'⛅';if(c===3)return'☁️';if([45,48].includes(c))return'🌫';if([51,53,55,56,57].includes(c))return'🌦';if([61,63,65,66,67,80,81,82].includes(c))return'🌧';if([71,73,75,77,85,86].includes(c))return'❄️';if([95,96,99].includes(c))return'⛈';return'🌡';};
@@ -544,8 +545,13 @@
       events:[]
     },
     {
-      date:"2026-06-22",day:24,label:"Monday, Jun 22",title:"Fly Home",loc:"✈️ Porto departures",color:"#64748b",
-      tip:"Porto Airport (OPO) is about 20 minutes from the city centre by metro (Line E, Violet) — straightforward and cheap. Check in early; the airport is smaller and can get backed up at security in the morning rush.",
+      date:"2026-06-22",day:24,label:"Monday, Jun 22",title:"Porto → Madrid",loc:"✈️ Porto → Madrid",color:"#64748b",
+      tip:"Porto Airport (OPO) is about 20 minutes from the city centre by metro (Line E, Violet). Madrid flight is a short ~1h hop — you'll have the evening to explore before the long flight home tomorrow.",
+      events:[]
+    },
+    {
+      date:"2026-06-23",day:25,label:"Tuesday, Jun 23",title:"Madrid · Fly Home",loc:"🇪🇸 Madrid → Charlotte",color:"#dc2626",
+      tip:"Make the most of the morning in Madrid before heading to Barajas (MAD). The metro is straightforward from the city centre — Line 8 goes directly to T4. Madrid is hot in late June so dress light for any morning sightseeing.",
       events:[]
     },
   ];
@@ -835,8 +841,8 @@
       <div>
         <div className="app-header">
           <div className="header-title">Europe 2026</div>
-          <div className="header-dates">May 30 – June 22</div>
-          <div className="header-route">🇬🇧 UK &nbsp;→&nbsp; 🇮🇹 Italy &nbsp;→&nbsp; 🇵🇹 Portugal</div>
+          <div className="header-dates">May 30 – June 23</div>
+          <div className="header-route">🇬🇧 UK &nbsp;→&nbsp; 🇮🇹 Italy &nbsp;→&nbsp; 🇵🇹 Portugal &nbsp;→&nbsp; 🇪🇸 Madrid</div>
           <div className="tab-bar">
             <button className={`tab-btn${tab==='itinerary'?' active':''}`} onClick={()=>setTab('itinerary')}>🗓 Itinerary</button>
             <button className={`tab-btn${tab==='weather'?' active':''}`} onClick={()=>setTab('weather')}>🌤 Weather</button>
@@ -847,7 +853,7 @@
         {tab==='itinerary'&&(
           <div className="tab-content">
             <div className="sl">
-              14 Days · tap ▼ to expand
+              25 Days · tap ▼ to expand
               {SHEET_ID&&(
                 <span style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:6,flexShrink:0}}>
                   {sheetErr&&<span style={{fontSize:10,color:'var(--stamp-red)'}}>{sheetErr}</span>}
